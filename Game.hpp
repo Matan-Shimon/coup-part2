@@ -11,7 +11,7 @@ namespace coup {
     private:
         inline static int id = 0;
         int game_id;
-        inline static int player_position = 0;
+        int player_position;
         queue<Player*> game_players;
         vector<string> players_name;
     public:
@@ -19,6 +19,7 @@ namespace coup {
         ~Game();
         string turn();
         vector<string>players();
+        int get_player_position() const;
         void addPlayer(Player* player);
         void coupPlayer(Player* player);
         void nextTurn();

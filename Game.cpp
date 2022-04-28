@@ -5,6 +5,7 @@
 using namespace coup;
 
 Game::Game(){
+    this->player_position = 0;
     this->game_id = id;
     id++;
 }
@@ -15,10 +16,12 @@ string Game::turn(){
 vector<string>Game::players(){
     return this->players_name;
 }
+int Game::get_player_position() const{
+    return this->player_position;
+}
 void Game::addPlayer(Player* player){
     if (!player->in_game){
-        player->position = player_position;
-        player_position++;
+        this->player_position++;
         player->in_game = true;
         this->game_players.push(player);
         this->players_name.push_back(player->getName());

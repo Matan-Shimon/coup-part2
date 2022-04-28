@@ -21,7 +21,7 @@ Player::Player(Game& game, string name){
     this->couped_player = nullptr;
     this->game = &game;
     this->game->addPlayer(this);
-    this->position = 0;
+    this->position = this->game->get_player_position();
 }
 Player::Player(Game& game, string name, string player_role){
     this->money = 0;
@@ -31,7 +31,7 @@ Player::Player(Game& game, string name, string player_role){
     this->couped_player = nullptr;
     this->game = &game;
     this->game->addPlayer(this);
-    this->position = 0;
+    this->position = this->game->get_player_position();
 }
 Player::~Player(){}
 void Player::income() {
