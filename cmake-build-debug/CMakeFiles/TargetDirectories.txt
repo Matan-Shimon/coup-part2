@@ -1,0 +1,3 @@
+C:/Users/matan/CLionProjects/coup_part2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/matan/CLionProjects/coup_part2/cmake-build-debug/CMakeFiles/coup_part2.dir
+C:/Users/matan/CLionProjects/coup_part2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
