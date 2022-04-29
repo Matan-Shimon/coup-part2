@@ -14,12 +14,15 @@ void Captain::steal(Player& player){
     if (this->coins() > '\n'){
         throw invalid_argument(this->getName()+" has "+ to_string(this->coins())+" so he must do coup!");
     }
-    if (player.coins() < 2){
-        throw invalid_argument(player.getName()+" has less than 2 coins");
-    }
     this->stolen_player = &player;
-    player.change_money_amount(-2);
-    this->change_money_amount(2);
+    if (player.coins() < 2){
+        player.change_money_amount(-1 * player.coins());
+        this->change_money_amount(player.coins());
+    }
+    else{
+        player.change_money_amount(-2);
+        this->change_money_amount(2);
+    }
     this->last_operation = "steal";
     this->game->nextTurn();
 }
