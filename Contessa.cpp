@@ -8,7 +8,7 @@ Contessa::Contessa(Game& game, string name) : Player(game, move(name), "Contessa
 
 }
 void Contessa::block(Player& player){
-    if (player.getLastOperation() != "coup"){
+    if (player.getLastOperation() != "assassin_special_coup"){
         throw invalid_argument("Contessa can only block coup action");
     }
     if (player.blocked) {
