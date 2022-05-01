@@ -33,7 +33,7 @@ void Ambassador::block(Player& player){
     }
     this->blocking = true;
     player.blocked = true;
-    Captain* captain = dynamic_cast<Captain*>(&player);
+    Captain* captain = (Captain*)&player;
     captain->change_money_amount(-2);
     captain->getStolenPlayer().change_money_amount(2);
 }
