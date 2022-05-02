@@ -8,6 +8,6 @@ namespace coup {
         Captain(Game& game, string name);
         void steal(Player& player);
         void block(Player& player);
-        Player getStolenPlayer();
+        Player& getStolenPlayer();
     };
 }

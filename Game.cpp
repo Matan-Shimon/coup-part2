@@ -13,14 +13,32 @@ Game::~Game() {}
 string Game::turn(){
     return this->game_players.front()->getName();
 }
+string Game::winner(){
+    if (this->game_players.size() != 1 || !this->game_started) {
+        throw invalid_argument("There is no winner to the game");
+    }
+    else {
+        return this->game_players.front()->getName();
+    }
+}
+int Game::get_num_of_players(){
+    return this->game_players.size();
+}
 vector<string>Game::players(){
     return this->players_name;
 }
 int Game::get_player_position() const{
     return this->player_position;
 }
+bool Game::get_game_started(){
+    return this->game_started;
+}
 void Game::addPlayer(Player* player){
+    if (this->game_players.size() == 6) {
+        throw invalid_argument("The game players max capacity is 6, maybe next time");
+    }
     if (!player->in_game){
+        player->position = this->player_position;
         this->player_position++;
         player->in_game = true;
         this->game_players.push(player);
@@ -28,10 +46,19 @@ void Game::addPlayer(Player* player){
     }
     else{
         Player* front = this->game_players.front();
-        while (this->game_players.front()->position != player->position+1){
-            Player* p = this->game_players.front();
-            this->game_players.pop();
-            this->game_players.push(p);
+        if (player->position == this->game_players.size()+1) {
+            while (this->game_players.front()->position != 1) {
+                Player* p = this->game_players.front();
+                this->game_players.pop();
+                this->game_players.push(p);
+            }
+        }
+        else {
+            while (this->game_players.front()->position != player->position+1){
+                Player* p = this->game_players.front();
+                this->game_players.pop();
+                this->game_players.push(p);
+            }
         }
         this->game_players.push(player);
         while (this->game_players.front() != front){
@@ -41,7 +68,9 @@ void Game::addPlayer(Player* player){
         }
         this->players_name.insert(this->players_name.begin() + player->position, player->getName());
     }
-
+    if (this->game_players.size() == 2) {
+        game_started = true;
+    }
 }
 void Game::coupPlayer(Player* player) {
     // Helper queue to store the elements

@@ -12,8 +12,8 @@ namespace coup{
         string name;
         string player_role;
         string last_operation;
-        Player* couped_player;
-        int coup_cost = 7;
+
+        int coup_cost = -7;
     public:
         int position;
         bool blocked = false;
@@ -31,7 +31,6 @@ namespace coup{
         string getName();
         string getLastOperation();
         Game* getGame();
-        Player* getCoupedPlayer();
         void setCoupCost(int cost);
         void change_money_amount(int change);
         bool operator!= (Player const & player);

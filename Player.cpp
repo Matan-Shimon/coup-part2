@@ -9,7 +9,6 @@ Player::Player() {
     this->name = "";
     this->last_operation = "";
     this->player_role = "";
-    this->couped_player = nullptr;
     this->game = nullptr;
     this->position = 0;
 }
@@ -18,7 +17,6 @@ Player::Player(Game& game, string name){
     this->name = move(name);
     this->last_operation = "";
     this->player_role = "";
-    this->couped_player = nullptr;
     this->game = &game;
     this->game->addPlayer(this);
     this->position = this->game->get_player_position();
@@ -28,13 +26,15 @@ Player::Player(Game& game, string name, string player_role){
     this->name = move(name);
     this->last_operation = "";
     this->player_role = move(player_role);
-    this->couped_player = nullptr;
     this->game = &game;
     this->game->addPlayer(this);
     this->position = this->game->get_player_position();
 }
 Player::~Player(){}
 void Player::income() {
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (this->game->turn() != this->name){
         throw invalid_argument("It's not "+this->name+" turn!");
     }
@@ -46,6 +46,9 @@ void Player::income() {
     this->game->nextTurn();
 }
 void Player::foreign_aid(){
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (this->game->turn() != this->name){
         throw invalid_argument("It's not "+this->name+" turn!");
     }
@@ -57,18 +60,20 @@ void Player::foreign_aid(){
     this->game->nextTurn();
 }
 void Player::coup(Player& player){
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (this->game->turn() != this->name){
         throw invalid_argument("It's not "+this->name+" turn!");
     }
     if (this->game != player.game){
         throw invalid_argument(player.getName()+" is not in "+this->getName()+" game");
     }
-    if (this->coins() < coup_cost){
+    if (this->coins() < 7){
         throw invalid_argument(this->getName()+" has less than 7 coins");
     }
-    this->couped_player = &player;
     this->game->coupPlayer(&player);
-    this->change_money_amount(-coup_cost);
+    this->change_money_amount(coup_cost);
     this->last_operation = "coup";
     this->game->nextTurn();
 }
@@ -104,7 +109,4 @@ bool Player::operator!=(const Player &player) {
 }
 bool Player::operator==(const Player &player) {
     return !(*this != player);
-}
-Player* Player::getCoupedPlayer(){
-    return this->couped_player;
 }

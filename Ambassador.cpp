@@ -7,6 +7,9 @@ using namespace coup;
 Ambassador::Ambassador(Game& game, string name) : Player(game, move(name), "Ambassador") {
 }
 void Ambassador::transfer(Player& took, Player& give) {
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (this->game->turn() != this->name){
         throw invalid_argument("It's not "+this->name+" turn!");
     }
@@ -22,6 +25,9 @@ void Ambassador::transfer(Player& took, Player& give) {
     this->game->nextTurn();
 }
 void Ambassador::block(Player& player){
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (player.getLastOperation() != "steal"){
         throw invalid_argument("Ambassador can only block steal action");
     }
@@ -30,6 +36,9 @@ void Ambassador::block(Player& player){
     }
     if (this->blocking) {
         throw invalid_argument(this->getName()+" is already blocking this round");
+    }
+    if (player.getName() == this->game->turn()) {
+        throw invalid_argument("cannot block a player while it is his turn");
     }
     this->blocking = true;
     player.blocked = true;

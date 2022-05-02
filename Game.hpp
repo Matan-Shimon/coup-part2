@@ -10,6 +10,7 @@ namespace coup {
     class Game{
     private:
         inline static int id = 0;
+        bool game_started = false;
         int game_id;
         int player_position;
         queue<Player*> game_players;
@@ -18,8 +19,11 @@ namespace coup {
         Game();
         ~Game();
         string turn();
+        string winner();
         vector<string>players();
         int get_player_position() const;
+        bool get_game_started();
+        int get_num_of_players();
         void addPlayer(Player* player);
         void coupPlayer(Player* player);
         void nextTurn();

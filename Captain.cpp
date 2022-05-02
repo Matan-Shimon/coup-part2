@@ -8,6 +8,9 @@ Captain::Captain(Game& game, string name) : Player(game, move(name), "Captain"){
     this->stolen_player = nullptr;
 }
 void Captain::steal(Player& player){
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (this->game->turn() != this->name){
         throw invalid_argument("It's not "+this->name+" turn!");
     }
@@ -27,6 +30,9 @@ void Captain::steal(Player& player){
     this->game->nextTurn();
 }
 void Captain::block(Player& player){
+    if (!this->game->get_game_started()) {
+        throw invalid_argument("The game must have at least 2 players");
+    }
     if (player.getLastOperation() != "steal"){
         throw invalid_argument("Captain can only block steal action");
     }
@@ -36,12 +42,15 @@ void Captain::block(Player& player){
     if (this->blocking) {
         throw invalid_argument(this->getName()+" is already blocking this round");
     }
+    if (player.getName() == this->game->turn()) {
+        throw invalid_argument("cannot block a player while it is his turn");
+    }
     this->blocking = true;
     player.blocked = true;
     Captain* captain = (Captain*)&player;
     captain->change_money_amount(-2);
     captain->getStolenPlayer().change_money_amount(2);
 }
-Player Captain::getStolenPlayer() {
-    return *(this->stolen_player);
+Player& Captain::getStolenPlayer() {
+    return *this->stolen_player;
 }
