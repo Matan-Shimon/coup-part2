@@ -18,6 +18,7 @@ void Duke::tax(){
     }
     this->change_money_amount(3);
     this->last_operation = "tax";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 void Duke::block(Player& player){

@@ -43,6 +43,7 @@ void Player::income() {
     }
     this->change_money_amount(1);
     this->last_operation = "income";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 void Player::foreign_aid(){
@@ -57,6 +58,7 @@ void Player::foreign_aid(){
     }
     this->change_money_amount(2);
     this->last_operation = "foreign_aid";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 void Player::coup(Player& player){
@@ -69,12 +71,13 @@ void Player::coup(Player& player){
     if (this->game != player.game){
         throw invalid_argument(player.getName()+" is not in "+this->getName()+" game");
     }
-    if (this->coins() < 7){
+    if (this->coins() < -this->coup_cost){
         throw invalid_argument(this->getName()+" has less than 7 coins");
     }
     this->game->coupPlayer(&player);
     this->change_money_amount(coup_cost);
     this->last_operation = "coup";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 string Player::role(){

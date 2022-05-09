@@ -6,6 +6,7 @@ using namespace coup;
 
 Assassin::Assassin(Game& game, string name) : Player(game, move(name), "Assassin"){
     this->setCoupCost(3);
+    this->couped_player = nullptr;
 }
 void Assassin::coup(Player& player){
     if (!this->game->get_game_started()) {
@@ -23,21 +24,20 @@ void Assassin::coup(Player& player){
     if (this->coins() < 3) {
         throw invalid_argument("Assassin cannot coup with less than 3 coins");
     }
-    else {
-        this->couped_player = &player;
-        this->game->coupPlayer(&player);
-        if (this->coins() > 6) {
-            this->coup_cost = -7;
-            this->change_money_amount(coup_cost);
-            this->last_operation = "coup";
-        }
-        else {
-            this->coup_cost = -3;
-            this->change_money_amount(coup_cost);
-            this->last_operation = "assassin_special_coup";
-        }
-        this->game->nextTurn();
+    this->couped_player = &player;
+    this->game->coupPlayer(&player);
+    if (this->coins() > this->high_cost-1) {
+        this->coup_cost = -this->high_cost;
+        this->change_money_amount(coup_cost);
+        this->last_operation = "coup";
     }
+    else {
+        this->coup_cost = -this->low_cost;
+        this->change_money_amount(coup_cost);
+        this->last_operation = "assassin_special_coup";
+    }
+    this->game->set_can_add(false);
+    this->game->nextTurn();
 }
 Player* Assassin::getCoupedPlayer(){
     return this->couped_player;

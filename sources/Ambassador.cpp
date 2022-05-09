@@ -22,6 +22,7 @@ void Ambassador::transfer(Player& took, Player& give) {
     took.change_money_amount(-1);
     give.change_money_amount(1);
     this->last_operation = "transfer";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 void Ambassador::block(Player& player){
@@ -42,7 +43,7 @@ void Ambassador::block(Player& player){
     }
     this->blocking = true;
     player.blocked = true;
-    Captain* captain = (Captain*)&player;
+    Captain* captain = dynamic_cast<Captain*>(&player);
     captain->change_money_amount(-2);
     captain->getStolenPlayer().change_money_amount(2);
 }

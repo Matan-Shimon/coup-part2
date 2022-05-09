@@ -12,7 +12,6 @@ namespace coup{
         string name;
         string player_role;
         string last_operation;
-
         int coup_cost = -7;
     public:
         int position;

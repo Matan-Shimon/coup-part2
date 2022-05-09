@@ -26,6 +26,6 @@ void Contessa::block(Player& player){
     }
     this->blocking = true;
     player.blocked = true;
-    Assassin* assassin = (Assassin*)&player;
+    Assassin* assassin = dynamic_cast<Assassin*>(&player);
     this->game->addPlayer(assassin->getCoupedPlayer());
 }

@@ -19,14 +19,16 @@ void Captain::steal(Player& player){
     }
     this->stolen_player = &player;
     if (player.coins() < 2){
-        player.change_money_amount(-1 * player.coins());
-        this->change_money_amount(player.coins());
+        int stolen_coins = player.coins();
+        player.change_money_amount(-1 * stolen_coins);
+        this->change_money_amount(stolen_coins);
     }
     else{
         player.change_money_amount(-2);
         this->change_money_amount(2);
     }
     this->last_operation = "steal";
+    this->game->set_can_add(false);
     this->game->nextTurn();
 }
 void Captain::block(Player& player){
@@ -47,7 +49,7 @@ void Captain::block(Player& player){
     }
     this->blocking = true;
     player.blocked = true;
-    Captain* captain = (Captain*)&player;
+    Captain* captain = dynamic_cast<Captain*>(&player);
     captain->change_money_amount(-2);
     captain->getStolenPlayer().change_money_amount(2);
 }

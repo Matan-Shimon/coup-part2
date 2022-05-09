@@ -17,9 +17,7 @@ string Game::winner(){
     if (this->game_players.size() != 1 || !this->game_started) {
         throw invalid_argument("There is no winner to the game");
     }
-    else {
-        return this->game_players.front()->getName();
-    }
+    return this->game_players.front()->getName();
 }
 int Game::get_num_of_players(){
     return this->game_players.size();
@@ -30,12 +28,15 @@ vector<string>Game::players(){
 int Game::get_player_position() const{
     return this->player_position;
 }
-bool Game::get_game_started(){
+bool Game::get_game_started() const{
     return this->game_started;
 }
 void Game::addPlayer(Player* player){
-    if (this->game_players.size() == 6) {
+    if (this->game_players.size() == this->max_players) {
         throw invalid_argument("The game players max capacity is 6, maybe next time");
+    }
+    if (!this->can_add && !player->in_game) {
+        throw invalid_argument("Sorry, the game has already started!");
     }
     if (!player->in_game){
         player->position = this->player_position;
@@ -66,7 +67,7 @@ void Game::addPlayer(Player* player){
             this->game_players.pop();
             this->game_players.push(p);
         }
-        this->players_name.insert(this->players_name.begin() + player->position, player->getName());
+        this->players_name.insert(this->players_name.begin() + player->position -1, player->getName());
     }
     if (this->game_players.size() == 2) {
         game_started = true;
@@ -123,6 +124,9 @@ void Game::nextTurn(){
     this->game_players.push(player);
     this->game_players.front()->blocked = false;
     this->game_players.front()->blocking = false;
+}
+void Game::set_can_add(bool can_add) {
+    this->can_add = can_add;
 }
 int Game::getGameID() const{
     return this->game_id;
